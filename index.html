@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Krittitee Naulkhao — Portfolio</title>
+  <meta name="description" content="Krittitee Naulkhao (Tee): IMO medalist, ISE at Chula, engineer.">
+  <meta property="og:title" content="Krittitee Naulkhao — Portfolio">
+  <meta property="og:description" content="Krittitee Naulkhao (Tee): IMO medalist, ISE at Chula, engineer.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="og.svg"><!-- TODO(user): replace with 1200x630 PNG/JPG (LinkedIn ignores SVG) and use an absolute URL -->
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="main.js" defer></script>
+  <!-- TODO(user): GoatCounter/Plausible script here -->
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="photo-ring">
+        <img class="photo" src="photo-400.webp" srcset="photo-400.webp 400w, photo-800.webp 800w" sizes="(min-width: 720px) 280px, 200px" width="400" height="500" alt="Portrait of Krittitee Naulkhao in a dark suit with an IMO Thailand badge, against a blue background">
+      </div>
+      <div class="hero-text">
+        <p class="handle"><span id="handle">T6523 (Tee)</span></p>
+        <h1 id="name" aria-label="Krittitee Naulkhao">Krittitee Naulkhao</h1>
+        <ul class="chips">
+          <li>IMO medalist</li>
+          <li>ISE, Chula</li>
+          <li>Engineer</li>
+        </ul>
+        <div class="cta">
+          <a class="btn" data-resume href="resume.pdf?v=2026-01-01" download="Krittitee_Naulkhao_Resume.pdf">Download Resume</a>
+          <button type="button" id="resume-preview-btn" class="linklike" hidden>Preview</button>
+          <a href="https://github.com/T6523">GitHub</a>
+          <a href="https://www.linkedin.com/in/krittiteenaulkhao">LinkedIn</a>
+          <a href="mailto:krittitee.n07@gmail.com">Email</a>
+        </div>
+      </div>
+      <nav id="tiles" class="tiles" aria-label="Project highlights"></nav>
+    </header>
+
+    <section aria-labelledby="projects-h">
+      <h2 id="projects-h">Featured projects <small>(all on GitHub)</small></h2>
+      <div id="cards" class="cards"><noscript>Projects need JavaScript. See <a href="https://github.com/T6523">GitHub</a>.</noscript></div>
+    </section>
+
+    <section id="viewer" class="viewer" hidden aria-label="Project viewer">
+      <div class="viewer-bar">
+        <a id="viewer-back" href="#projects-h">← Back to portfolio</a>
+        <strong id="viewer-title"></strong>
+        <a id="viewer-open" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <iframe id="viewer-frame" title="Project page" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <section class="stack" aria-labelledby="stack-h">
+      <h2 id="stack-h">Tools used across these projects</h2>
+      <ul id="legend" class="legend" aria-label="Project colours"></ul>
+      <ul id="stack" class="chips stack-chips"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <a href="mailto:krittitee.n07@gmail.com">krittitee.n07@gmail.com</a> ·
+    <a href="https://github.com/T6523">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/krittiteenaulkhao">LinkedIn</a> ·
+    Last updated <time id="updated" datetime="2026-10-21">2026-10-21</time>
+  </footer>
+  <dialog id="resume-dialog" aria-label="Resume preview">
+    <div class="viewer-bar">
+      <strong>Resume preview</strong>
+      <span>
+        <a data-resume href="resume.pdf" target="_blank" rel="noopener">Open in new tab ↗</a>
+        <a class="btn" data-resume href="resume.pdf" download="Krittitee_Naulkhao_Resume.pdf">Download</a>
+        <button type="button" id="resume-close">Close</button>
+      </span>
+    </div>
+    <iframe id="resume-frame" title="Resume PDF"></iframe>
+  </dialog>
+  <dialog id="leave">
+    <p>This will take you to <strong id="leave-host"></strong> and leave this page.</p>
+    <p id="leave-url"></p>
+    <form method="dialog" class="actions">
+      <button value="cancel">Stay here</button>
+      <button value="go" class="go">Continue</button>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Site = index.html, style.css, main.js, data.js, photo-*.webp, og.svg, resume.pdf. Ignore the rest.
+*.md
+!README.md
+mypic.*
+resume/
+*:Zone.Identifier
+.claude/
