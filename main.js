@@ -36,25 +36,6 @@
       <ul class="chips">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
     </article>`).join('');
 
-  // stack strip: dedupe case-insensitively, sort by usage desc then A-Z, max 12.
-  // Each pill carries one dot per project using it; hovering a pill lifts those cards.
-  const seen = new Map();
-  projects.forEach(p => new Set(p.tags.map(t => t.toLowerCase())).forEach(k => {
-    const e = seen.get(k) || { name: p.tags.find(t => t.toLowerCase() === k), used: [] };
-    e.used.push(p); seen.set(k, e);
-  }));
-  const numOf = p => `<span class="num" title="${esc(p.title)}">${projects.indexOf(p) + 1}</span>`;
-  document.getElementById('legend').innerHTML = projects.map((p, i) => `<li>${num(i)}${esc(p.title)}</li>`).join('');
-  const stack = document.getElementById('stack');
-  stack.innerHTML = [...seen.values()]
-    .sort((a, b) => b.used.length - a.used.length || a.name.localeCompare(b.name)).slice(0, 12)
-    .map(e => `<li data-slugs="${e.used.map(p => esc(p.slug)).join(' ')}"><span class="dots">${e.used.map(numOf).join('')}</span>${esc(e.name)}</li>`).join('');
-  const peek = (li, on) => li.dataset.slugs.split(' ').forEach(s => document.getElementById(s).classList.toggle('peek', on));
-  stack.querySelectorAll('li').forEach(li => {
-    li.addEventListener('pointerenter', () => peek(li, true));
-    li.addEventListener('pointerleave', () => peek(li, false));
-  });
-
   // project viewer: card click loads the project page in an iframe below the grid.
   // Without JS (or with a modified click) the card is a normal link, so it still redirects.
   const viewer = document.getElementById('viewer'), frame = document.getElementById('viewer-frame');
@@ -81,18 +62,30 @@
   // framing) get a confirm dialog, then open in the whole window. Needs same-origin frames,
   // which holds on <user>.github.io; cross-origin (e.g. localhost testing) is skipped.
   const dlg = document.getElementById('leave');
+  const confirmLeave = a => {
+    const mail = a.protocol === 'mailto:';
+    const who = mail ? a.pathname : a.hostname;
+    document.getElementById('leave-msg').replaceChildren(
+      mail ? 'This will open your email app to write to ' : 'This will take you to ',
+      Object.assign(document.createElement('strong'), { textContent: who }),
+      mail ? '.' : ' and leave this page.');
+    document.getElementById('leave-url').textContent = mail ? '' : a.href;
+    dlg.returnValue = '';
+    dlg.onclose = () => { if (dlg.returnValue === 'go') location.href = a.href; };
+    dlg.showModal();
+  };
+  // contact/social links on this page
+  document.querySelectorAll('a[data-confirm]').forEach(a => a.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault(); confirmLeave(a);
+  }));
   frame.addEventListener('load', () => {
     let doc; try { doc = frame.contentDocument; } catch { return; }
     if (!doc) return;
     doc.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('a[href]');
       if (!a || !/^https?:$/.test(a.protocol) || a.hostname === location.hostname || a.hostname === 't6523.github.io') return;
-      e.preventDefault();
-      document.getElementById('leave-host').textContent = a.hostname;
-      document.getElementById('leave-url').textContent = a.href;
-      dlg.returnValue = '';
-      dlg.onclose = () => { if (dlg.returnValue === 'go') location.href = a.href; };
-      dlg.showModal();
+      e.preventDefault(); confirmLeave(a);
     }, true);
   });
   document.getElementById('cards').addEventListener('click', e => {

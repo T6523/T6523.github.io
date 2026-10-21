@@ -14,8 +14,8 @@ window.PROJECTS = [
   {
     slug: "ab-test-toolkit",
     title: "A/B Test Toolkit",
-    metric: { value: "256", label: "tests, verified by simulation" },
-    outcome: "Plan, analyze and decide A/B tests; false positive rate measured at 5.1% and CI coverage at 95.0%.",
+    metric: { value: "19.2%", label: "false positives from peeking, cut to 5% by sequential tests" },
+    outcome: "Simulation shows peeking at 10 looks inflates false positives from 5% to 19.2%; sequential boundaries hold them at 4.8–5.0%.",
     snippet: "Sample size, confidence intervals and launch verdicts, checked by Monte Carlo simulation. Runs in the browser via Pyodide.",
     tags: ["Python", "NumPy", "SciPy", "Pyodide"],
     url: "https://t6523.github.io/ab-test-toolkit/",
