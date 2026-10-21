@@ -4,6 +4,7 @@
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 * { box-sizing: border-box; }
+html { scrollbar-gutter: stable; } /* no sideways jump when the page grows taller */
 body { margin: 0; background: var(--bg); color: var(--fg); font: 1rem/1.5 var(--font); }
 main { max-width: 960px; margin: 0 auto; padding: 2rem 16px; }
 a { color: var(--link); }
@@ -38,7 +39,6 @@ body.viewing .card:not(.lift):not(:hover) { opacity: .6; }
 .card h3 a { color: var(--fg); text-decoration: none; }
 .card h3 a::after { content: ""; position: absolute; inset: 0; } /* whole card clickable */
 .card p { margin: .5rem 0; }
-.card .outcome { font-weight: 600; }
 .card .chips { margin: .75rem 0; }
 footer { max-width: 960px; margin: 0 auto; padding: 2rem 16px; color: var(--muted); border-top: 1px solid var(--line); }
 @media (min-width: 720px) {
@@ -54,13 +54,10 @@ h2 small { font-weight: 400; color: var(--muted); }
 .tiles { grid-column: 1 / -1; }
 @media (min-width: 720px) { .hero { grid-template-columns: 280px 1fr; gap: 2.5rem; } }
 
-/* photo with rotating gradient ring, gentle float */
-.photo-ring { width: 200px; padding: 5px; border-radius: 24px; background: conic-gradient(from var(--a, 0deg), #2c5cc5, #9db8ec, #2c5cc5); animation: spin 6s linear infinite, float 5s ease-in-out infinite; }
+/* photo with a solid accent ring */
+.photo-ring { width: 200px; padding: 5px; border-radius: 24px; background: var(--accent); }
 .photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; background: var(--line); }
 @media (min-width: 720px) { .photo-ring { width: 280px; } }
-@property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@keyframes spin { to { --a: 360deg; } }
-@keyframes float { 50% { transform: translateY(-8px); } }
 
 /* handle: T6523 <-> Tee scramble loop */
 .handle { font: 700 1.1rem/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--link); margin: 0 0 .5rem; }
@@ -69,7 +66,7 @@ h2 small { font-weight: 400; color: var(--muted); }
 
 /* name: letters are inline-blocks so each can jump on hover (JS) */
 #name .ch { display: inline-block; white-space: pre; cursor: default; }
-@media (prefers-reduced-motion: reduce) { .photo-ring { animation: none; } .handle span::after { content: none; } }
+@media (prefers-reduced-motion: reduce) { .handle span::after { content: none; } }
 #name .word { display: inline-block; white-space: nowrap; }
 
 /* in-page project viewer */
@@ -172,3 +169,8 @@ footer p { margin: .75rem 0 0; }
 /* footer email + copy */
 .foot-mail { margin: .75rem 0 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* reserve space for the JS-rendered tiles and cards so the page does not jump while loading */
+.tiles { min-height: 320px; }
+.cards { min-height: 1900px; }
+@media (min-width: 720px) { .tiles { min-height: 125px; } .cards { min-height: 1060px; } }

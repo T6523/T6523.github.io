@@ -13,19 +13,22 @@
   document.getElementById('resume-close').addEventListener('click', () => rd.close());
   rd.addEventListener('click', e => { if (e.target === rd) rd.close(); }); // backdrop click
 
-  // footer: copy email address
-  const cm = document.getElementById('copy-mail');
-  cm.hidden = false;
-  cm.addEventListener('click', async () => {
-    const mail = 'krittitee.n07@gmail.com';
-    try { await navigator.clipboard.writeText(mail); } catch {
-      const t = Object.assign(document.createElement('textarea'), { value: mail });
+  // copy text to the clipboard, then flash "Copied!" on the button that asked
+  const copyText = async (text, btn) => {
+    try { await navigator.clipboard.writeText(text); } catch {
+      const t = Object.assign(document.createElement('textarea'), { value: text });
       document.body.append(t); t.select(); document.execCommand('copy'); t.remove();
     }
-    cm.textContent = 'Copied!';
+    const label = btn.dataset.label ||= btn.textContent;
+    btn.textContent = 'Copied!';
     document.getElementById('copy-note').textContent = 'Email address copied';
-    setTimeout(() => { cm.textContent = 'Copy'; document.getElementById('copy-note').textContent = ''; }, 1800);
-  });
+    setTimeout(() => { btn.textContent = label; document.getElementById('copy-note').textContent = ''; }, 1800);
+  };
+  const MAIL = 'krittitee.n07@gmail.com';
+  const cm = document.getElementById('copy-mail');
+  cm.hidden = false;
+  cm.addEventListener('click', () => copyText(MAIL, cm));
+  document.getElementById('leave-copy').addEventListener('click', e => copyText(MAIL, e.currentTarget));
 
   const u = document.getElementById('updated');
   u.textContent = u.dateTime = site.lastUpdated;
@@ -44,10 +47,9 @@
 
   document.getElementById('cards').innerHTML = projects.map((p, i) => `
     <article class="card" id="${esc(p.slug)}">
-      ${p.image ? `<img class="thumb" src="${esc(p.image)}" width="720" height="450" loading="lazy" alt="Screenshot of the ${esc(p.title)} page">` : ''}
+      ${p.image ? `<img class="thumb" src="${esc(p.image)}" width="720" height="450" loading="${i < 2 ? 'eager' : 'lazy'}" alt="Screenshot of the ${esc(p.title)} page">` : ''}
       <h3>${num(i)}<a href="${esc(p.url)}">${esc(p.title)}</a></h3>
       <p class="outcome">${esc(p.outcome)}</p>
-      <p>${esc(p.snippet)}</p>
       <ul class="chips">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
       <span class="more" aria-hidden="true">View project <b>→</b></span>
     </article>`).join('');
@@ -89,6 +91,7 @@
       Object.assign(document.createElement('strong'), { textContent: who }),
       mail ? '.' : ' and leave this page.');
     document.getElementById('leave-url').textContent = mail ? '' : a.href;
+    document.getElementById('leave-copy').hidden = !mail;
     dlg.returnValue = '';
     dlg.onclose = () => { if (dlg.returnValue === 'go') location.href = a.href; };
     dlg.showModal();
