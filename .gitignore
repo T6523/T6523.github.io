@@ -1,4 +1,4 @@
-# Site = index.html, style.css, main.js, data.js, photo-*.webp, og.svg, resume.pdf. Ignore the rest.
+# Site = index.html, style.css, main.js, data.js, photo-*.webp, og.jpg, thumb-*.webp, favicon-32.png, apple-touch-icon.png, resume.pdf. Ignore the rest.
 *.md
 !README.md
 mypic.*

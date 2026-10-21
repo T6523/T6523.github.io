@@ -9,7 +9,7 @@ window.PROJECTS = [
     snippet: "Double DQN written from scratch in PyTorch, exported to ONNX and run in the browser.",
     tags: ["Python", "PyTorch", "ONNX", "Reinforcement learning"],
     url: "https://t6523.github.io/dqn-minesweeper-solver/",
-    image: ""
+    image: "thumb-dqn-minesweeper-solver.webp"
   },
   {
     slug: "ab-test-toolkit",
@@ -19,7 +19,7 @@ window.PROJECTS = [
     snippet: "Sample size, confidence intervals and launch verdicts, checked by Monte Carlo simulation. Runs in the browser via Pyodide.",
     tags: ["Python", "NumPy", "SciPy", "Pyodide"],
     url: "https://t6523.github.io/ab-test-toolkit/",
-    image: ""
+    image: "thumb-ab-test-toolkit.webp"
   },
   {
     slug: "bangkok-airbnb-pricing",
@@ -29,7 +29,7 @@ window.PROJECTS = [
     snippet: "DuckDB SQL feature engineering and a tuned boosted-tree ensemble in a Docker pipeline, with an in-browser price estimator.",
     tags: ["Python", "DuckDB", "Gradient boosting", "Docker"],
     url: "https://t6523.github.io/bangkok-airbnb-pricing/",
-    image: ""
+    image: "thumb-bangkok-airbnb-pricing.webp"
   },
   {
     slug: "predictive_keyboard",
@@ -39,6 +39,6 @@ window.PROJECTS = [
     snippet: "Predicts the next word from context plus the first letter typed. Includes an in-browser n-gram demo.",
     tags: ["Python", "LoRA", "KenLM", "NLP"],
     url: "https://t6523.github.io/predictive_keyboard/",
-    image: ""
+    image: "thumb-predictive_keyboard.webp"
   }
 ];

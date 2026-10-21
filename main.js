@@ -13,6 +13,20 @@
   document.getElementById('resume-close').addEventListener('click', () => rd.close());
   rd.addEventListener('click', e => { if (e.target === rd) rd.close(); }); // backdrop click
 
+  // footer: copy email address
+  const cm = document.getElementById('copy-mail');
+  cm.hidden = false;
+  cm.addEventListener('click', async () => {
+    const mail = 'krittitee.n07@gmail.com';
+    try { await navigator.clipboard.writeText(mail); } catch {
+      const t = Object.assign(document.createElement('textarea'), { value: mail });
+      document.body.append(t); t.select(); document.execCommand('copy'); t.remove();
+    }
+    cm.textContent = 'Copied!';
+    document.getElementById('copy-note').textContent = 'Email address copied';
+    setTimeout(() => { cm.textContent = 'Copy'; document.getElementById('copy-note').textContent = ''; }, 1800);
+  });
+
   const u = document.getElementById('updated');
   u.textContent = u.dateTime = site.lastUpdated;
 
@@ -30,10 +44,12 @@
 
   document.getElementById('cards').innerHTML = projects.map((p, i) => `
     <article class="card" id="${esc(p.slug)}">
+      ${p.image ? `<img class="thumb" src="${esc(p.image)}" width="720" height="450" loading="lazy" alt="Screenshot of the ${esc(p.title)} page">` : ''}
       <h3>${num(i)}<a href="${esc(p.url)}">${esc(p.title)}</a></h3>
       <p class="outcome">${esc(p.outcome)}</p>
       <p>${esc(p.snippet)}</p>
       <ul class="chips">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+      <span class="more" aria-hidden="true">View project <b>→</b></span>
     </article>`).join('');
 
   // project viewer: card click loads the project page in an iframe below the grid.
@@ -42,6 +58,7 @@
   // Same-site (deployed): plain src. Cross-origin (e.g. localhost): the browser would hide the
   // frame's clicks from us, so fetch the page (github.io sends CORS *) and use srcdoc + <base>.
   const load = p => {
+    viewer.classList.add('loading');
     frame.removeAttribute('srcdoc');
     if (new URL(p.url).origin === location.origin) { frame.src = p.url; return; }
     fetch(p.url).then(r => r.text()).then(t => {
@@ -51,6 +68,8 @@
   const show = slug => {
     const p = projects.find(x => x.slug === slug);
     document.querySelectorAll('.card').forEach(c => c.classList.toggle('lift', !!p && c.id === slug));
+    document.querySelectorAll('.tile').forEach(t => t.classList.toggle('active', !!p && t.dataset.slug === slug));
+    document.body.classList.toggle('viewing', !!p);
     if (!p) { viewer.hidden = true; frame.removeAttribute('srcdoc'); frame.removeAttribute('src'); delete frame.dataset.slug; return; }
     if (frame.dataset.slug !== slug) { frame.dataset.slug = slug; load(p); }
     document.getElementById('viewer-title').textContent = p.title;
@@ -79,6 +98,11 @@
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
     e.preventDefault(); confirmLeave(a);
   }));
+  // loading bar: hide it once a real page (not the interim about:blank) has loaded
+  frame.addEventListener('load', () => {
+    let blank = false; try { blank = frame.contentDocument.URL === 'about:blank'; } catch {}
+    if (!blank) viewer.classList.remove('loading');
+  });
   frame.addEventListener('load', () => {
     let doc; try { doc = frame.contentDocument; } catch { return; }
     if (!doc) return;
