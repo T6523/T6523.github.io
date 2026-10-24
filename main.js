@@ -9,7 +9,13 @@
   const pdf = `resume.pdf?v=${site.resumeVersion}`;
   const pb = document.getElementById('resume-preview-btn');
   pb.hidden = false;
-  pb.addEventListener('click', () => { if (!rf.getAttribute('src')) rf.src = pdf + '#view=FitH'; rd.showModal(); });
+  // iOS Safari ignores #view=FitH and shows an iframe PDF zoomed in; its own viewer fits the page, so open the file there
+  const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  pb.addEventListener('click', () => {
+    if (ios) { window.open(pdf, '_blank'); return; }
+    if (!rf.getAttribute('src')) rf.src = pdf + '#view=FitH';
+    rd.showModal();
+  });
   document.getElementById('resume-close').addEventListener('click', () => rd.close());
   rd.addEventListener('click', e => { if (e.target === rd) rd.close(); }); // backdrop click
 

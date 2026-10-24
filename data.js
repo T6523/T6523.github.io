@@ -1,5 +1,5 @@
 // Single source of content. Plain JS (not JSON) so the page also works when opened via file://.
-window.SITE = { resumeVersion: "2026-01-01", lastUpdated: "2026-10-21" };
+window.SITE = { resumeVersion: "2026-01-01", lastUpdated: "2026-10-25" };
 window.PROJECTS = [
   {
     slug: "dqn-minesweeper-solver",
