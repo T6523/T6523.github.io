@@ -125,6 +125,16 @@
   addEventListener('hashchange', route);
   route();
 
+  // tech stack: duplicate the list so the scroll loops seamlessly
+  const stack = document.querySelector('.stack');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const list = stack.firstElementChild;
+    const copy = list.cloneNode(true);
+    copy.removeAttribute('id'); copy.setAttribute('aria-hidden', 'true');
+    copy.querySelectorAll('img').forEach(i => { i.alt = ''; i.removeAttribute('title'); i.loading = 'eager'; });
+    stack.append(copy); stack.classList.add('run');
+  }
+
   // everything below is motion: skipped for reduced motion or if GSAP failed to load
   if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 

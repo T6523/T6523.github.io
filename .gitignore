@@ -1,7 +1,9 @@
-# Site = index.html, style.css, main.js, data.js, photo-*.webp, og.jpg, thumb-*.webp, favicon-32.png, apple-touch-icon.png, resume.pdf. Ignore the rest.
+# Site = index.html, style.css, main.js, data.js, photo-*.webp, og.jpg, thumb-*.webp, favicon-32.png, apple-touch-icon.png, resume.pdf
 *.md
 !README.md
 mypic.*
 resume/
 *:Zone.Identifier
-.claude/
+
+# Chrome/Lighthouse temp profiles (created with Windows-style names under WSL)
+C:*
